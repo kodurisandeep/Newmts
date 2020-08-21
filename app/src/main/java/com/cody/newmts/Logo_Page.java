@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -56,6 +57,7 @@ public class Logo_Page extends AppCompatActivity {
         });*/
 
         id = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("id", "0");
+        assert id != null;
         if (id.equals("0")) {
             id = getUID();
             if (id != null)
@@ -86,14 +88,18 @@ public class Logo_Page extends AppCompatActivity {
     public String getUID() {
         String idShort = "18" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) + (Build.MODEL.length() % 10) + (Build.DEVICE.length() % 10)
                 + (Build.MANUFACTURER.length() % 10) + (Build.PRODUCT.length() % 10);
-        String serial = null;
+        String serial;
+
         try {
-            serial = Build.class.getField("SERIAL").get(null).toString();
+            serial = Objects.requireNonNull(Build.class.getField("SERIAL").get(null)).toString();
         } catch (Exception e) {
             serial = "serial";
         }
         return String.valueOf(new UUID(idShort.hashCode(), serial.hashCode()));
     }
+
+
+    //added sample code..to test changes.
 
 
 }
